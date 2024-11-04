@@ -157,7 +157,8 @@ extension ViewController {
 
     func createMoreBtnMenu() -> UIMenu {
         UIMenu(title: "", children: [
-            UIAction(title: brushMode ? "Activate pencil" : "Activate brush", image: UIImage(named: canvas.instrument == .pencil ? "brush" : "pencil")) { [weak self] _ in
+            UIAction(title: brushMode ? "Activate pencil" : "Activate brush", 
+                     image: UIImage(named: brushMode ? "brush" : "pencil")?.withTintColor(UIColor(named: "tintColor")!)) { [weak self] _ in
                 guard let self = self else { return }
 
                 brushMode = !brushMode
