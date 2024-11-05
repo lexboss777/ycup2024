@@ -33,7 +33,8 @@ class CanvasView: UIView {
 
     var instrument: Instrument = .pencil
 
-    let pattern = UIImage(systemName: "heart")
+    var patternN = 0
+    var patterns: [UIImage] = []
     var patternMinDistance: CGFloat = 20
     var lastPatternDrawPoint: CGPoint?
     var patternDrawPoint: CGPoint?
@@ -55,6 +56,12 @@ class CanvasView: UIView {
     private func setup() {
         isOpaque = false
         clearsContextBeforeDrawing = true
+
+        for letter in "yandex" {
+            if let image = UIImage(systemName: "\(letter).circle") {
+                patterns.append(image)
+            }
+        }
     }
 
     // MARK: - private methods
@@ -119,10 +126,14 @@ class CanvasView: UIView {
 
             if instrument == .brush, let point = patternDrawPoint {
                 let randomAngle = CGFloat.random(in: 0...2 * .pi)
-                if let pattern = pattern?.rotate(radians: randomAngle)?.withTintColor(drawColor) {
+                if let pattern = patterns[patternN].rotate(radians: randomAngle)?.withTintColor(drawColor) {
                     pattern.draw(at: CGPoint(x: point.x - pattern.size.width / 2, y: point.y - pattern.size.height))
                     self.patternDrawPoint = nil
                     self.lastPatternDrawPoint = point
+                    self.patternN += 1
+                    if self.patternN == patterns.count {
+                        self.patternN = 0
+                    }
                 }
             }
 
